@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Base360 — Every conversation, every channel, every lead. One system.</title>
+<meta name="description" content="Base360 unifies every comment, DM, call, and email into one system, lets AI agents do the work, and turns every conversation into a tracked lead.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Work+Sans:wght@400;500;600;700&family=Newsreader:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F8F4EC;
+    --bg-soft:#EFE7D6;
+    --surface:#FFFFFF;
+    --surface-2:#F3EDDE;
+    --border:#E2D8BF;
+    --text:#20291F;
+    --text-muted:#6E6858;
+    --text-faint:#9C9483;
+    --signal:#33503F;
+    --signal-soft:rgba(51,80,63,0.10);
+    --gold:#B8862E;
+    --ig:#C24E76;
+    --tt:#2A968E;
+    --wa:#4C9A5F;
+    --sms:#4568B2;
+    --mail:#8B8672;
+    --call:#BE6A38;
+    --shadow:0 10px 28px rgba(40,32,15,0.08);
+    --radius-lg:20px;
+    --radius-md:14px;
+    --maxw:1180px;
+  }
+
+  *,*::before,*::after{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Work Sans',sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:'Newsreader',serif;
+    font-weight:600;
+    line-height:1.14;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+  p{ margin:0; }
+  a{ color:inherit; text-decoration:none; }
+  ul{ margin:0; padding:0; list-style:none; }
+  img,svg{ display:block; max-width:100%; }
+  .mono{ font-family:'IBM Plex Mono',monospace; }
+
+  section{ scroll-margin-top:84px; }
+
+  .wrap{
+    max-width:var(--maxw);
+    margin:0 auto;
+    padding:0 32px;
+  }
+
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12.5px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--signal);
+    margin-bottom:16px;
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+  }
+  .eyebrow::before{
+    content:'';
+    width:16px;
+    height:1px;
+    background:var(--signal);
+  }
+
+  /* ---------- Buttons ---------- */
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    padding:13px 26px;
+    border-radius:999px;
+    font-family:'Work Sans',sans-serif;
+    font-weight:600;
+    font-size:15px;
+    cursor:pointer;
+    border:1px solid transparent;
+    transition:transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    white-space:nowrap;
+  }
+  .btn:hover{ transform:translateY(-1px); }
+  .btn-primary{
+    background:var(--signal);
+    color:#F8F4EC;
+    box-shadow:var(--shadow);
+  }
+  .btn-primary:hover{ background:#3E6350; }
+  .btn-ghost{
+    background:transparent;
+    border-color:var(--border);
+    color:var(--text);
+  }
+  .btn-ghost:hover{ border-color:var(--signal); color:var(--signal); }
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--signal);
+    outline-offset:3px;
+    border-radius:4px;
+  }
+
+  /* ---------- Nav ---------- */
+  header{
+    position:fixed;
+    top:0; left:0; right:0;
+    z-index:50;
+    background:rgba(248,244,236,0.86);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  nav{
+    max-width:var(--maxw);
+    margin:0 auto;
+    padding:16px 32px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .logo{
+    font-family:'Newsreader',serif;
+    font-weight:600;
+    font-size:21px;
+    letter-spacing:-0.01em;
+  }
+  .logo span{ color:var(--signal); }
+  .nav-links{
+    display:flex;
+    gap:32px;
+    font-size:14.5px;
+    color:var(--text-muted);
+  }
+  .nav-links a:hover{ color:var(--text); }
+  .nav-right{ display:flex; align-items:center; gap:22px; }
+
+  @media (max-width:760px){
+    .nav-links{ display:none; }
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    padding:168px 0 96px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:'';
+    position:absolute;
+    top:-200px; right:-160px;
+    width:640px; height:640px;
+    background:radial-gradient(circle, rgba(184,134,46,0.14), transparent 68%);
+    pointer-events:none;
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.05fr 0.95fr;
+    gap:56px;
+    align-items:center;
+    position:relative;
+  }
+  .hero h1{
+    font-size:clamp(34px,4.6vw,54px);
+    max-width:600px;
+  }
+  .hero-sub{
+    margin-top:24px;
+    font-size:18px;
+    color:var(--text-muted);
+    max-width:480px;
+    line-height:1.65;
+  }
+  .hero-ctas{
+    margin-top:36px;
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+  .hero-note{
+    margin-top:22px;
+    font-size:13px;
+    color:var(--text-faint);
+    font-family:'IBM Plex Mono',monospace;
+  }
+
+  @media (max-width:900px){
+    .hero-grid{ grid-template-columns:1fr; }
+    .hero{ padding:140px 0 64px; }
+  }
+
+  /* ---------- Convergence graphic ---------- */
+  .converge{
+    position:relative;
+    width:100%;
+    max-width:440px;
+    aspect-ratio:1/1;
+    margin:0 auto;
+  }
+  .hub{
+    position:absolute;
+    left:50%; top:50%;
+    transform:translate(-50%,-50%);
+    width:clamp(92px,26vw,124px);
+    height:clamp(92px,26vw,124px);
+    border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #4C7060, var(--signal) 75%);
+    box-shadow:0 0 0 1px rgba(51,80,63,0.28), 0 18px 40px rgba(35,45,32,0.22), 0 0 0 10px rgba(51,80,63,0.06);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Newsreader',serif;
+    font-style:italic;
+    font-weight:600;
+    font-size:clamp(18px,4vw,24px);
+    color:#F8F4EC;
+    z-index:3;
+  }
+  .hub::after{
+    content:'';
+    position:absolute;
+    inset:-16px;
+    border-radius:50%;
+    border:1.5px solid var(--signal);
+    opacity:0;
+    animation:ring 3.2s ease-out infinite;
+  }
+  @keyframes ring{
+    0%{ transform:scale(0.82); opacity:0.35; }
+    100%{ transform:scale(1.55); opacity:0; }
+  }
+
+  .node{
+    position:absolute;
+    transform:translate(-50%,-50%);
+    width:clamp(50px,15vw,66px);
+    height:clamp(50px,15vw,66px);
+    border-radius:50%;
+    background:var(--surface);
+    border:1.5px solid var(--node-color, var(--border));
+    color:var(--node-color, var(--text-muted));
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:var(--shadow);
+    z-index:2;
+  }
+  .node svg{
+    width:44%;
+    height:44%;
+  }
+  .pulse{
+    position:absolute;
+    width:9px; height:9px;
+    border-radius:50%;
+    transform:translate(-50%,-50%);
+    opacity:0;
+    z-index:1;
+  }
+  @keyframes flow-e  { 0%{left:88%;top:50%;opacity:0;} 12%{opacity:1;} 82%{opacity:1;} 100%{left:50%;top:50%;opacity:0;} }
+  @keyframes flow-ne { 0%{left:69%;top:17%;opacity:0;} 12%{opacity:1;} 82%{opacity:1;} 100%{left:50%;top:50%;opacity:0;} }
+  @keyframes flow-nw { 0%{left:31%;top:17%;opacity:0;} 12%{opacity:1;} 82%{opacity:1;} 100%{left:50%;top:50%;opacity:0;} }
+  @keyframes flow-w  { 0%{left:12%;top:50%;opacity:0;} 12%{opacity:1;} 82%{opacity:1;} 100%{left:50%;top:50%;opacity:0;} }
+  @keyframes flow-sw { 0%{left:31%;top:83%;opacity:0;} 12%{opacity:1;} 82%{opacity:1;} 100%{left:50%;top:50%;opacity:0;} }
+  @keyframes flow-se { 0%{left:69%;top:83%;opacity:0;} 12%{opacity:1;} 82%{opacity:1;} 100%{left:50%;top:50%;opacity:0;} }
+
+  /* ---------- Problem ---------- */
+  .problem{
+    padding:88px 0;
+    border-top:1px solid var(--border);
+    border-bottom:1px solid var(--border);
+    background:var(--bg-soft);
+  }
+  .problem-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:64px;
+    align-items:start;
+  }
+  .problem h2{ font-size:clamp(26px,3.4vw,36px); max-width:480px; }
+  .problem-body{
+    margin-top:20px;
+    color:var(--text-muted);
+    font-size:16.5px;
+    max-width:460px;
+  }
+  .chaos{
+    position:relative;
+    height:280px;
+  }
+  .chip{
+    position:absolute;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:9px 16px;
+    border-radius:999px;
+    background:var(--surface);
+    border:1px solid var(--chip-color, var(--border));
+    color:var(--chip-color, var(--text-muted));
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12.5px;
+    box-shadow:var(--shadow);
+  }
+  .chip .dot{
+    width:7px; height:7px; border-radius:50%;
+    background:#C0453F;
+  }
+  .chip.c1{ top:6%; left:2%; transform:rotate(-6deg); }
+  .chip.c2{ top:2%; left:44%; transform:rotate(4deg); }
+  .chip.c3{ top:22%; left:70%; transform:rotate(-3deg); }
+  .chip.c4{ top:48%; left:8%; transform:rotate(3deg); }
+  .chip.c5{ top:52%; left:52%; transform:rotate(-5deg); }
+  .chip.c6{ top:72%; left:26%; transform:rotate(5deg); }
+  .chip.c7{ top:78%; left:66%; transform:rotate(-2deg); }
+
+  @media (max-width:900px){
+    .problem-grid{ grid-template-columns:1fr; gap:40px; }
+    .chaos{ height:220px; margin-top:8px; }
+  }
+  @media (max-width:520px){
+    .chip{ font-size:11px; padding:7px 12px; }
+  }
+
+  /* ---------- Capabilities ---------- */
+  .capabilities{ padding:100px 0; }
+  .cap-head{ max-width:560px; margin-bottom:56px; }
+  .cap-head h2{ font-size:clamp(26px,3.4vw,38px); margin-top:16px; }
+  .cap-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:24px;
+  }
+  .cap-card{
+    background:var(--surface);
+    padding:40px;
+    border:1px solid var(--border);
+    border-radius:var(--radius-lg);
+    box-shadow:var(--shadow);
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+  }
+  .cap-icon{
+    width:48px; height:48px;
+    color:var(--signal);
+  }
+  .cap-card h3{
+    font-size:19px;
+    font-weight:600;
+  }
+  .cap-card p{
+    color:var(--text-muted);
+    font-size:15px;
+    line-height:1.6;
+  }
+  @media (max-width:760px){
+    .cap-grid{ grid-template-columns:1fr; }
+    .cap-card{ padding:32px; }
+  }
+
+  /* ---------- Story / timeline ---------- */
+  .story{
+    padding:100px 0 110px;
+    background:var(--bg-soft);
+    border-top:1px solid var(--border);
+    border-bottom:1px solid var(--border);
+  }
+  .story-head{ max-width:640px; margin-bottom:20px; }
+  .story-head h2{ font-size:clamp(26px,3.4vw,38px); margin-top:16px; }
+  .story-intro{
+    margin-top:18px;
+    color:var(--text-muted);
+    font-size:17px;
+    max-width:560px;
+  }
+  .timeline{
+    margin-top:56px;
+    position:relative;
+    max-width:700px;
+  }
+  .timeline::before{
+    content:'';
+    position:absolute;
+    left:23px; top:8px; bottom:8px;
+    width:1.5px;
+    background:linear-gradient(var(--border), var(--border));
+  }
+  .step{
+    position:relative;
+    padding:0 0 44px 68px;
+  }
+  .step:last-child{ padding-bottom:0; }
+  .step-idx{
+    position:absolute;
+    left:0; top:0;
+    width:48px; height:48px;
+    border-radius:50%;
+    background:var(--surface);
+    border:1.5px solid var(--border);
+    box-shadow:var(--shadow);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:14px;
+    color:var(--text-faint);
+    transition:border-color 0.4s ease, color 0.4s ease, background 0.4s ease;
+  }
+  .step.is-visible .step-idx{
+    border-color:var(--signal);
+    color:var(--signal);
+    background:var(--signal-soft);
+  }
+  .step-tag{
+    display:inline-block;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11.5px;
+    letter-spacing:0.06em;
+    padding:4px 10px;
+    border-radius:6px;
+    border:1px solid var(--tag-color, var(--border));
+    color:var(--tag-color, var(--text-muted));
+    margin-bottom:10px;
+  }
+  .step h3{
+    font-size:18px;
+    font-weight:600;
+    margin-bottom:8px;
+  }
+  .step p{
+    color:var(--text-muted);
+    font-size:15px;
+    max-width:520px;
+  }
+  .story-close{
+    margin-top:48px;
+    padding-top:32px;
+    border-top:1px solid var(--border);
+    font-family:'Newsreader',serif;
+    font-style:italic;
+    font-size:20px;
+    max-width:560px;
+  }
+  .story-close strong{ color:var(--signal); }
+
+  /* ---------- CTA ---------- */
+  .cta{
+    padding:110px 0;
+    text-align:center;
+  }
+  .cta h2{
+    font-size:clamp(28px,4vw,42px);
+    max-width:640px;
+    margin:0 auto;
+  }
+  .cta p{
+    margin:20px auto 0;
+    color:var(--text-muted);
+    font-size:17px;
+    max-width:440px;
+  }
+  .cta .btn{ margin-top:36px; }
+
+  /* ---------- Footer ---------- */
+  footer{
+    border-top:1px solid var(--border);
+    padding:40px 0;
+  }
+  .footer-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:16px;
+  }
+  .footer-left{ display:flex; align-items:baseline; gap:14px; }
+  .footer-left .logo{ font-size:16px; }
+  .footer-tag{
+    color:var(--text-faint);
+    font-size:13.5px;
+    font-family:'IBM Plex Mono',monospace;
+  }
+  .footer-copy{
+    color:var(--text-faint);
+    font-size:13px;
+  }
+
+  /* ---------- Reveal ---------- */
+  [data-reveal]{
+    opacity:0;
+    transform:translateY(22px);
+    transition:opacity 0.7s ease, transform 0.7s ease;
+  }
+  [data-reveal].is-visible{ opacity:1; transform:translateY(0); }
+  .cap-card:nth-child(1){ transition-delay:0s; }
+  .cap-card:nth-child(2){ transition-delay:0.08s; }
+  .cap-card:nth-child(3){ transition-delay:0.16s; }
+  .cap-card:nth-child(4){ transition-delay:0.24s; }
+
+  @media (prefers-reduced-motion: reduce){
+    [data-reveal]{ transition:none; opacity:1; transform:none; }
+    .pulse, .hub::after{ animation:none; }
+    html{ scroll-behavior:auto; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <div class="logo">Base<span>360</span></div>
+    <ul class="nav-links">
+      <li><a href="#problem">Why Base360</a></li>
+      <li><a href="#capabilities">What it does</a></li>
+      <li><a href="#story">See it in action</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="#cta" class="btn btn-primary">Book a demo</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow">For B2C brands buried in comments &amp; DMs</div>
+        <h1>Every conversation, every channel, every lead — in one system.</h1>
+        <p class="hero-sub">Base360 pulls every comment, DM, message, and call into a single inbox, then hands the busywork to AI agents — replying, qualifying, and following up before your team even logs in.</p>
+        <div class="hero-ctas">
+          <a href="#cta" class="btn btn-primary">Book a demo</a>
+          <a href="#story" class="btn btn-ghost">See one comment become a customer</a>
+        </div>
+        <div class="hero-note">Unifying Instagram · TikTok · WhatsApp · SMS · calls · email</div>
+      </div>
+
+      <div class="converge" role="img" aria-label="Diagram showing messages from Instagram, TikTok, WhatsApp, SMS, email, and calls converging into the Base360 system">
+        <div class="node" style="--node-color:var(--ig); left:88%; top:50%;" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.1" cy="6.9" r="0.6" fill="currentColor" stroke="none"/></svg>
+        </div>
+        <div class="node" style="--node-color:var(--tt); left:69%; top:17%;" aria-label="TikTok">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4v10.4a3.4 3.4 0 1 1-2.4-3.25"/><path d="M14 4.2c.5 2.35 2.3 3.9 4.8 4.1"/></svg>
+        </div>
+        <div class="node" style="--node-color:var(--wa); left:31%; top:17%;" aria-label="WhatsApp">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5c4.7 0 8.5 3.4 8.5 7.6 0 4.2-3.8 7.6-8.5 7.6-1 0-2-.15-2.9-.43L5 20l1.1-3.5A7.6 7.6 0 0 1 3.5 11.1c0-4.2 3.8-7.6 8.5-7.6Z"/></svg>
+        </div>
+        <div class="node" style="--node-color:var(--mail); left:12%; top:50%;" aria-label="Email">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="M3.5 6.6L12 13.2l8.5-6.6"/></svg>
+        </div>
+        <div class="node" style="--node-color:var(--call); left:31%; top:83%;" aria-label="Phone call">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6.6 3.5c.7 0 1.3.45 1.5 1.1l1 3a1.6 1.6 0 0 1-.4 1.7L7.4 10.6a12 12 0 0 0 6 6l1.3-1.3a1.6 1.6 0 0 1 1.7-.4l3 1c.65.2 1.1.8 1.1 1.5v2.6c0 1-1 1.7-2 1.4-4.4-1.1-8.4-3.3-11.4-6.3S1.7 8.5.6 4.1c-.3-1 .4-2 1.4-2Z"/></svg>
+        </div>
+        <div class="node" style="--node-color:var(--sms); left:69%; top:83%;" aria-label="SMS">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="12" rx="4"/><path d="M8 20l3-3"/><circle cx="8.2" cy="11" r="0.85" fill="currentColor" stroke="none"/><circle cx="12" cy="11" r="0.85" fill="currentColor" stroke="none"/><circle cx="15.8" cy="11" r="0.85" fill="currentColor" stroke="none"/></svg>
+        </div>
+
+        <div class="pulse" style="background:var(--ig); animation:flow-e 3s ease-in-out infinite; animation-delay:0s;"></div>
+        <div class="pulse" style="background:var(--tt); animation:flow-ne 3s ease-in-out infinite; animation-delay:0.5s;"></div>
+        <div class="pulse" style="background:var(--wa); animation:flow-nw 3s ease-in-out infinite; animation-delay:1s;"></div>
+        <div class="pulse" style="background:var(--mail); animation:flow-w 3s ease-in-out infinite; animation-delay:1.5s;"></div>
+        <div class="pulse" style="background:var(--call); animation:flow-sw 3s ease-in-out infinite; animation-delay:2s;"></div>
+        <div class="pulse" style="background:var(--sms); animation:flow-se 3s ease-in-out infinite; animation-delay:2.5s;"></div>
+
+        <div class="hub">360°</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROBLEM -->
+  <section class="problem" id="problem">
+    <div class="wrap problem-grid">
+      <div data-reveal>
+        <div class="eyebrow">The problem</div>
+        <h2>Your customers are already talking to you. You're just not always there to answer.</h2>
+        <p class="problem-body">Comments pile up on Instagram and TikTok. DMs, WhatsApp threads, texts, calls, and emails all land in different apps. Newsletters and campaigns live somewhere else entirely. Replies come late, comments go unanswered, leads slip through — and no one on the team has one view of the customer.</p>
+      </div>
+      <div class="chaos" data-reveal>
+        <div class="chip c1" style="--chip-color:var(--ig)"><span class="dot"></span>Instagram — 34 unread</div>
+        <div class="chip c2" style="--chip-color:var(--tt)"><span class="dot"></span>TikTok comments</div>
+        <div class="chip c3" style="--chip-color:var(--wa)"><span class="dot"></span>WhatsApp</div>
+        <div class="chip c4" style="--chip-color:var(--sms)"><span class="dot"></span>SMS</div>
+        <div class="chip c5" style="--chip-color:var(--call)"><span class="dot"></span>Missed calls</div>
+        <div class="chip c6" style="--chip-color:var(--mail)"><span class="dot"></span>Email</div>
+        <div class="chip c7" style="--chip-color:var(--text-muted)"><span class="dot"></span>Newsletter tool</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAPABILITIES -->
+  <section class="capabilities" id="capabilities">
+    <div class="wrap">
+      <div class="cap-head" data-reveal>
+        <div class="eyebrow">What Base360 does</div>
+        <h2>Four systems. One brain.</h2>
+      </div>
+      <div class="cap-grid">
+        <div class="cap-card" data-reveal>
+          <svg class="cap-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="14" y="6" width="24" height="18" rx="4" opacity="0.35"/>
+            <rect x="9" y="13" width="24" height="18" rx="4" opacity="0.6"/>
+            <rect x="4" y="20" width="24" height="18" rx="4"/>
+            <path d="M9 26l7 5 7-5"/>
+          </svg>
+          <h3>One unified inbox</h3>
+          <p>Every comment on Meta and TikTok, every DM, WhatsApp message, text, call, and email — in a single inbox. Reply to a comment without ever opening the app it came from.</p>
+        </div>
+        <div class="cap-card" data-reveal>
+          <svg class="cap-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M24 6v10M24 32v10M6 24h10M32 24h10M12 12l7 7M29 29l7 7M36 12l-7 7M19 29l-7 7"/>
+            <circle cx="24" cy="24" r="6"/>
+          </svg>
+          <h3>AI agents that do the work</h3>
+          <p>Build agents that reply to comments, answer customer questions, qualify leads, follow up automatically, and even call with an AI voice. The repetitive work disappears from your team's plate.</p>
+        </div>
+        <div class="cap-card" data-reveal>
+          <svg class="cap-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 10h32l-11 14v10l-10 4V24z"/>
+            <circle cx="24" cy="24" r="2" fill="currentColor" stroke="none"/>
+          </svg>
+          <h3>A built-in CRM</h3>
+          <p>Every conversation becomes a tracked lead. High-intent leads get flagged and routed straight to sales, so nothing gets missed and every opportunity gets worked.</p>
+        </div>
+        <div class="cap-card" data-reveal>
+          <svg class="cap-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="5" y="14" width="28" height="20" rx="3"/>
+            <path d="M5 16l14 11 14-11"/>
+            <path d="M36 20l7-6M43 14v6h-6"/>
+          </svg>
+          <h3>Marketing &amp; subscribers</h3>
+          <p>Capture sign-ups from your site, send newsletters and campaigns, and track opens and clicks — all tied to the same customer record as every comment and call.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STORY -->
+  <section class="story" id="story">
+    <div class="wrap">
+      <div class="story-head" data-reveal>
+        <div class="eyebrow">See it in action</div>
+        <h2>One comment. Handled start to finish — automatically.</h2>
+        <p class="story-intro">This is what happens when a stranger asks "how much is this?" in your comments.</p>
+      </div>
+
+      <div class="timeline">
+        <div class="step" data-reveal>
+          <div class="step-idx mono">01</div>
+          <span class="step-tag mono" style="--tag-color:var(--tt)">TIKTOK · COMMENT</span>
+          <h3>A comment lands</h3>
+          <p>Someone comments "how much is this?" on a TikTok post.</p>
+        </div>
+        <div class="step" data-reveal>
+          <div class="step-idx mono">02</div>
+          <span class="step-tag mono" style="--tag-color:var(--tt)">TIKTOK · DM</span>
+          <h3>The AI replies — twice</h3>
+          <p>An AI agent answers the comment publicly, then slides into their DMs.</p>
+        </div>
+        <div class="step" data-reveal>
+          <div class="step-idx mono">03</div>
+          <span class="step-tag mono" style="--tag-color:var(--tt)">DM</span>
+          <h3>The AI answers everything</h3>
+          <p>In the DM, the agent explains the offer and answers follow-up questions.</p>
+        </div>
+        <div class="step" data-reveal>
+          <div class="step-idx mono">04</div>
+          <span class="step-tag mono" style="--tag-color:var(--signal)">CRM</span>
+          <h3>A lead is born</h3>
+          <p>The contact is added to the CRM, flagged as a high-intent lead.</p>
+        </div>
+        <div class="step" data-reveal>
+          <div class="step-idx mono">05</div>
+          <span class="step-tag mono" style="--tag-color:var(--call)">CALL</span>
+          <h3>The AI picks up the phone</h3>
+          <p>An AI voice calls to walk them through the product.</p>
+        </div>
+        <div class="step" data-reveal>
+          <div class="step-idx mono">06</div>
+          <span class="step-tag mono" style="--tag-color:var(--mail)">EMAIL</span>
+          <h3>Nurtured until they buy</h3>
+          <p>They're enrolled in email marketing and nurtured — automatically — until they buy.</p>
+        </div>
+      </div>
+
+      <p class="story-close" data-reveal>One missed comment. Turned into a <strong>closed customer</strong>. Nobody on your team lifted a finger.</p>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="cta" id="cta">
+    <div class="wrap">
+      <h2 data-reveal>Stop losing customers in your comments.</h2>
+      <p data-reveal>See how Base360 turns your busiest channel into your best salesperson.</p>
+      <a href="#" class="btn btn-primary" data-reveal>Book a demo</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap footer-row">
+    <div class="footer-left">
+      <div class="logo">Base<span>360</span></div>
+      <span class="footer-tag">base360.ai — One system for every conversation.</span>
+    </div>
+    <div class="footer-copy">© 2026 Base360. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var els = document.querySelectorAll('[data-reveal]');
+    if ('IntersectionObserver' in window) {
+      var obs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            obs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.18 });
+      els.forEach(function (el) { obs.observe(el); });
+    } else {
+      els.forEach(function (el) { el.classList.add('is-visible'); });
+    }
+  });
+</script>
+
+</body>
+</html>
